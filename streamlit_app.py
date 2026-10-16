@@ -17,7 +17,10 @@ st.write("The name on your Smoothie will be: ", name_on_order)
 
 cnx = st.connection("snowflake")
 session = cnx.session()
-my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME',col('SEARCH_ON')))
+my_dataframe = session.table("smoothies.public.fruit_options").select(
+    col('FRUIT_NAME'), 
+    col('SEARCH_ON')
+)
 
 pd_df = my_dataframe.to_pandas()
 st.dataframe(pd_df)
@@ -43,9 +46,8 @@ if my_new_dataframe:
             st.write('Something went wrong!')
             
 ingredients = st.multiselect(
-    "Choose up to 5 ingredients:?",
-    my_dataframe,
-
+    "Choose up to 5 ingredients:",
+    pd_df['FRUIT_NAME'],
     max_selections=5
 )
 
